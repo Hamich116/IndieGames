@@ -1,0 +1,238 @@
+﻿<Page x:Class="IndieGames.StorePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:local="clr-namespace:IndieGames"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="StorePage" x:Name="Store"
+      Loaded="Store_Loaded"
+      Background="#0a0a0a">
+    <Page.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="swapVerticalPic" 
+                         UriSource="/resources/SwapVertical.png"/>
+            <BitmapImage x:Key="searchPic" 
+                         UriSource="/resources/search.png"/>
+            <Style TargetType="ListView">
+                <Setter Property="ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <DataTemplate x:Key="MyImagesItemTemplate">
+                <Grid PreviewMouseMove="Grid_PreviewMouseMove">
+                    <Grid.RowDefinitions>
+                        <RowDefinition  Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Image Grid.Row="0" Source="{Binding Path=Image}" RenderOptions.BitmapScalingMode="HighQuality" Height="150" Width="100" />
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical" Grid.Row="1">
+                        <Label Content="{Binding Path=Name}" Foreground="White" HorizontalAlignment="Center" Width="100" VerticalAlignment="Center" HorizontalContentAlignment="Center"  />
+                        <Button x:Name="buyButton" Margin="0,-5,0,0" Background="Transparent" BorderBrush="Transparent" Click="BuyGame">
+                            <Label Content="Купить" Foreground="White"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary x:Name="m1" Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary x:Name="m2" Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary x:Name="m3" Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+                <ResourceDictionary x:Name="m4" Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+    <Grid Background="#0a0a0a">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32*"/>
+            <RowDefinition Height="193*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="119*"/>
+            <ColumnDefinition Width="41*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Все игры" 
+                   Foreground="White" 
+                   FontSize="20" 
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment="Center" 
+                   Grid.Column="0" 
+                   Grid.Row="0" 
+                   Margin="20,0,0,0"/>
+        <StackPanel Background="#1a1a1a" 
+                    Margin="0,0,50,0"
+                    Height="40" 
+                    Orientation="Horizontal"
+                    Grid.Row="0" 
+                    Grid.Column="0" 
+                    Grid.ColumnSpan="2"
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Right" >
+            <Image x:Name="SearchPicture" 
+                   Source="{DynamicResource searchPic}"></Image>
+            <TextBox BorderThickness="0" 
+                     x:Name="search"
+                     BorderBrush="Transparent" 
+                     TextAlignment="Left" 
+                     VerticalContentAlignment="Center" 
+                     FontSize="15" 
+                     Width="200"
+                     Foreground="AliceBlue" 
+                     Background="#1a1a1a"
+                     TextChanged="searchGame"
+                     materialDesign:HintAssist.Hint="Поиск..."/>
+        </StackPanel>
+        <ListView x:Name="ListGames" 
+                  Grid.Row="1" 
+                  Grid.Column="0" 
+                  Grid.ColumnSpan="1" 
+                  Background="#0a0a0a"  
+                  ItemsSource="{Binding Path=Games, ElementName=Store}"
+                  ItemTemplate="{StaticResource MyImagesItemTemplate}" 
+                  SelectionChanged="EnterToGamePage"
+                  SelectionMode="Single"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                  />
+        <StackPanel Orientation="Vertical"
+                    Grid.Row="1"
+                    Grid.Column="1">
+            <Button x:Name="CostButton" 
+                    Background="#0a0a0a" 
+                    Click="CostButton_Click" >
+                <StackPanel Orientation="Horizontal" 
+                            HorizontalAlignment="Center">
+                    <TextBlock x:Name="cost" 
+                               Text="Цена" 
+                               Foreground="Gray"/>
+                    <Image Source="{DynamicResource ResourceKey=swapVerticalPic}" 
+                           Height="20" 
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center"/>
+                </StackPanel>
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Name="Border" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter Content="{TemplateBinding Content}" 
+                                              ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                              Margin="{TemplateBinding Padding}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Button.IsFocused" 
+                                     Value="True">
+                                <Setter TargetName="Border" 
+                                        Property="Background" 
+                                        Value="Transparent" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Border x:Name="costContent" 
+                    BorderBrush="Gray" 
+                    CornerRadius="10,10,10,10" 
+                    BorderThickness="2" 
+                    Height="0" 
+                    Margin="0,10,0,10">
+                <StackPanel>
+                    <Button Background="Transparent" Click="chooseCost">
+                        <TextBlock Text="Ниже 350" 
+                                   Foreground="Gray" 
+                                   HorizontalAlignment="Center"/>
+                    </Button>
+                    <Button Background="Transparent" Click="chooseCost">
+                        <TextBlock Text="Ниже 1300" 
+                                   Foreground="Gray" 
+                                   HorizontalAlignment="Center"/>
+                    </Button>
+                    <Button Background="Transparent" Click="chooseCost">
+                        <TextBlock Text="Ниже 950" 
+                                   Foreground="Gray" 
+                                   HorizontalAlignment="Center"/>
+                    </Button>
+                    <Button Background="Transparent" Click="chooseCost">
+                        <TextBlock Text="899 и Выше" 
+                                   Foreground="Gray" 
+                                   HorizontalAlignment="Center"/>
+                    </Button>
+                </StackPanel>
+            </Border>
+            <Button x:Name="categoriesButton" 
+                    Background="#0a0a0a" 
+                    Click="categoriesButton_Click" >
+                <StackPanel Orientation="Horizontal" 
+                            HorizontalAlignment="Center">
+                    <TextBlock x:Name="categories" 
+                               Text="Категории" 
+                               Foreground="Gray"/>
+                    <Image Source="{DynamicResource ResourceKey=swapVerticalPic}" 
+                           Height="20" 
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center"/>
+                </StackPanel>
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Name="Border" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter Content="{TemplateBinding Content}" 
+                                              ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                              Margin="{TemplateBinding Padding}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Button.IsFocused" 
+                                     Value="True">
+                                <Setter TargetName="Border" 
+                                        Property="Background" 
+                                        Value="Transparent" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Border x:Name="categoriesContent" 
+                    BorderBrush="Gray" 
+                    CornerRadius="10,10,10,10" 
+                    BorderThickness="2" 
+                    Height="0" 
+                    Margin="0,10,0,0">
+                <StackPanel>
+                    <Button Background="Transparent" Click="chooseCategories">
+                        <TextBlock Text="Экшен" 
+                                   Foreground="Gray" 
+                                   HorizontalAlignment="Center"/>
+                    </Button>
+                    <Button Background="Transparent" Click="chooseCategories">
+                        <TextBlock Text="Приключение" 
+                                   Foreground="Gray" 
+                                   HorizontalAlignment="Center"/>
+                    </Button>
+                    <Button Background="Transparent" Click="chooseCategories">
+                        <TextBlock Text="RPG" 
+                                   Foreground="Gray" 
+                                   HorizontalAlignment="Center"/>
+                    </Button>
+                    <Button Background="Transparent" Click="chooseCategories">
+                        <TextBlock Text="RogueLike" 
+                                   Foreground="Gray" 
+                                   HorizontalAlignment="Center"/>
+                    </Button>
+                    <Button Background="Transparent" Click="chooseCategories">
+                        <TextBlock Text="Другие" 
+                                   Foreground="Gray" 
+                                   HorizontalAlignment="Center"/>
+                    </Button>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+</Page>

@@ -1,0 +1,31 @@
+﻿<Window x:Class="IndieGames.windows.CustomMessageBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IndieGames.windows"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="" Height="250" Width="200" ResizeMode="NoResize"
+        Topmost="True"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="warning" 
+                         UriSource="/resources/warning.png"/>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary x:Name="m1" Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary x:Name="m2" Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary x:Name="m3" Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+                <ResourceDictionary x:Name="m4" Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <StackPanel Background="#0a0a0a">
+            <Image Source="{StaticResource warning}" Width="50"></Image>
+            <TextBlock x:Name="message" Text="Какая-либо ошибка" Width="150" TextWrapping="Wrap" Foreground="White"/>
+            <Button Click="Close" Width="120" Margin="0,20,0,0" Background="Transparent">Ok</Button>
+        </StackPanel>
+    </Grid>
+</Window>

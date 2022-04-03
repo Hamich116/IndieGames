@@ -1,0 +1,109 @@
+﻿<Window x:Class="IndieGames.Registration"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IndieGames"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Registration" 
+        Height="400"
+        Width="600"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="#0a0a0a">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="logo" 
+                         UriSource="/resources/logoBig.png"/>
+            <BitmapImage x:Key="title" 
+                         UriSource="/resources/logo.png"/>
+            <BitmapImage x:Key="check" 
+                         UriSource="/resources/done.png"/>
+            <BitmapImage x:Key="checkPassword" 
+                         UriSource="/resources/cross.png"/>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary x:Name="m1" Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary x:Name="m2" Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary x:Name="m3" Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+                <ResourceDictionary x:Name="m4" Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <StackPanel Background="#0a0a0a" 
+                    VerticalAlignment="Center">
+            <TextBox PreviewTextInput="TextBoxPreviewTextInput"
+                     x:Name="Login"
+                     TextAlignment="Center" 
+                     VerticalContentAlignment="Center" 
+                     Background="Transparent" 
+                     Foreground="White" 
+                     Width="200" 
+                     Height="40" 
+                     BorderBrush="White"
+                     materialDesign:HintAssist.Hint="Введите логин"
+                     TextChanged ="Checking" />
+            <PasswordBox PreviewTextInput="PasswordBoxPreviewTextInput"
+                     x:Name="Password"
+                     VerticalContentAlignment="Center"
+                     Background="Transparent"
+                     Foreground="White"
+                     Width="200"
+                     Height="40"
+                     Margin="0,30,0,0" 
+                     BorderBrush="White"
+                     PasswordChanged="CheckingPassword"
+                     materialDesign:HintAssist.Hint="Введите пароль"/>
+            <PasswordBox
+                     x:Name="PasswordAgain"
+                     VerticalContentAlignment="Center"
+                     Background="Transparent"
+                     Foreground="White"
+                     Width="200"
+                     Height="40"
+                     Margin="0,30,0,0" 
+                     BorderBrush="White"
+                     materialDesign:HintAssist.Hint="Повторно напишите пароль"
+                     PasswordChanged="CheckingPassword"
+                     PreviewTextInput="PasswordBoxPreviewTextInput"/>
+            <Button Background="Transparent"
+                    Margin="0,20,0,0"
+                    Click="Registrate"
+                    Cursor="Hand"
+                    Width="210">
+                <TextBlock Foreground="White"
+                           Text="Зарегистрироваться"
+                           FontSize="18"></TextBlock>
+            </Button>
+        </StackPanel>
+        <TextBlock Background="Transparent" 
+                   Foreground="White" 
+                   FontSize="30" 
+                   FontWeight="Bold"
+                   HorizontalAlignment="Left"
+                   Height="48"
+                   Margin="193,10,0,0"
+                   TextWrapping="Wrap"
+                   Text="Регистрация"
+                   VerticalAlignment="Top"
+                   Width="192"/>
+        <Image Source="{StaticResource logo}" 
+               HorizontalAlignment="Left"
+               Height="79" 
+               Margin="10,10,0,0"
+               VerticalAlignment="Top"
+               Width="76"
+               Cursor="Hand"
+               MouseDown="Image_MouseDown"
+               RenderOptions.BitmapScalingMode="HighQuality">
+            <Image.ToolTip>
+                <TextBlock Text="Назад" Foreground="#0a0a0a"></TextBlock>
+            </Image.ToolTip>
+        </Image>
+        <Image x:Name="checkingPic" Width="20" Source="{DynamicResource check}" Margin="406,77,167.6,271.4" Visibility="Hidden"></Image>
+        <Image x:Name="checkingPassword" Width="20" Source="{DynamicResource checkPassword}" Margin="406,219,167.6,128.4" Visibility="Hidden"></Image>
+    </Grid>
+</Window>

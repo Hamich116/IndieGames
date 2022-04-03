@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="games_storeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Category1" Relationship="Self.FK_Category_Category" FromRole="Category" ToRole="Category1" />
+    <NavigationProperty Name="Category2" Relationship="Self.FK_Category_Category" FromRole="Category1" ToRole="Category" />
+    <NavigationProperty Name="Games" Relationship="Self.FK_Games_Category" FromRole="Category" ToRole="Games" />
+  </EntityType>
+  <EntityType Name="Client">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsAdministration" Type="Boolean" />
+    <NavigationProperty Name="ClientsAndGames" Relationship="Self.FK_ClientsAndGames_Clients" FromRole="Clients" ToRole="ClientsAndGames" />
+    <Property Name="Balance" Type="Int32" />
+  </EntityType>
+  <EntityType Name="ClientsAndGame">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="ClientId" Type="Int32" />
+    <Property Name="GamesId" Type="Int32" />
+    <NavigationProperty Name="Client" Relationship="Self.FK_ClientsAndGames_Clients" FromRole="ClientsAndGames" ToRole="Clients" />
+    <NavigationProperty Name="Game" Relationship="Self.FK_ClientsAndGames_Games" FromRole="ClientsAndGames" ToRole="Games" />
+  </EntityType>
+  <EntityType Name="Game">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="StudioId" Type="Int32" />
+    <Property Name="CategoryId" Type="Int32" />
+    <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Cost" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Trailer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="MagnetUri" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Category" Relationship="Self.FK_Games_Category" FromRole="Games" ToRole="Category" />
+    <NavigationProperty Name="ClientsAndGames" Relationship="Self.FK_ClientsAndGames_Games" FromRole="Games" ToRole="ClientsAndGames" />
+    <NavigationProperty Name="Studio" Relationship="Self.FK_Games_Studio" FromRole="Games" ToRole="Studio" />
+  </EntityType>
+  <EntityType Name="Studio">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Games" Relationship="Self.FK_Games_Studio" FromRole="Studio" ToRole="Games" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_Category_Category">
+    <End Role="Category" Type="Self.Category" Multiplicity="1" />
+    <End Role="Category1" Type="Self.Category" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Category1">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Games_Category">
+    <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+    <End Role="Games" Type="Self.Game" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Games">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ClientsAndGames_Clients">
+    <End Role="Clients" Type="Self.Client" Multiplicity="0..1" />
+    <End Role="ClientsAndGames" Type="Self.ClientsAndGame" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ClientsAndGames">
+        <PropertyRef Name="ClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ClientsAndGames_Games">
+    <End Role="Games" Type="Self.Game" Multiplicity="0..1" />
+    <End Role="ClientsAndGames" Type="Self.ClientsAndGame" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Games">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ClientsAndGames">
+        <PropertyRef Name="GamesId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Games_Studio">
+    <End Role="Studio" Type="Self.Studio" Multiplicity="0..1" />
+    <End Role="Games" Type="Self.Game" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Studio">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Games">
+        <PropertyRef Name="StudioId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="gamesStoreEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Categories" EntityType="Self.Category" />
+    <EntitySet Name="Clients" EntityType="Self.Client" />
+    <EntitySet Name="ClientsAndGames" EntityType="Self.ClientsAndGame" />
+    <EntitySet Name="Games" EntityType="Self.Game" />
+    <EntitySet Name="Studios" EntityType="Self.Studio" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <AssociationSet Name="FK_Category_Category" Association="Self.FK_Category_Category">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="Category1" EntitySet="Categories" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Games_Category" Association="Self.FK_Games_Category">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="Games" EntitySet="Games" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ClientsAndGames_Clients" Association="Self.FK_ClientsAndGames_Clients">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="ClientsAndGames" EntitySet="ClientsAndGames" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ClientsAndGames_Games" Association="Self.FK_ClientsAndGames_Games">
+      <End Role="Games" EntitySet="Games" />
+      <End Role="ClientsAndGames" EntitySet="ClientsAndGames" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Games_Studio" Association="Self.FK_Games_Studio">
+      <End Role="Studio" EntitySet="Studios" />
+      <End Role="Games" EntitySet="Games" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

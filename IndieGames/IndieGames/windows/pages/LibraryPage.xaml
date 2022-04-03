@@ -1,0 +1,130 @@
+﻿<Page x:Class="IndieGames.LibraryPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:IndieGames"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" 
+      d:DesignWidth="800"
+      Title="LibraryPage" 
+      x:Name="Library"
+      Background="#0a0a0a">
+    
+    <Page.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="searchPic" 
+                         UriSource="/resources/search.png"/>
+            <Style TargetType="ListView">
+                <Setter Property="ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <DataTemplate x:Key="MyImagesItemTemplate">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition  Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Image Grid.Row="0" Source="{Binding Path=Image}" RenderOptions.BitmapScalingMode="HighQuality" Height="150" Width="100" />
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical" Grid.Row="1">
+                        <Label Content="{Binding Path=Name}" Foreground="White" HorizontalAlignment="Center" Width="100" 
+                               VerticalAlignment="Center" HorizontalContentAlignment="Center" />
+                        <Button Margin="0,-5,0,0" Click="DownloadGame" Background="Transparent" BorderBrush="Transparent">
+                            <Label Content="Скачать" Foreground="White"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary x:Name="m1" Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary x:Name="m2" Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary x:Name="m3" Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+                <ResourceDictionary x:Name="m4" Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Background="#0a0a0a">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="54*"></RowDefinition>
+            <RowDefinition Height="395*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" 
+                    Grid.Row="0" 
+                    Grid.Column="0" 
+                    Grid.ColumnSpan="2" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Center">
+            <TextBlock Text="Сортировка:" 
+                       Foreground="Gray" 
+                       FontSize="20" 
+                       Margin="35,0,0,0"/>
+            <ComboBox x:Name="sortBox" Text="" Margin="15,0,0,0" 
+                      Background="#999689"
+                      SelectionChanged="sortBox_SelectionChanged">
+                <TextBlock Text="Экшен" 
+                                   Foreground="Gray" 
+                                   HorizontalAlignment="Center"/>
+                <TextBlock Text="RogueLike" 
+                                   Foreground="Gray" 
+                                   HorizontalAlignment="Center"/>
+                <TextBlock Text="RPG" 
+                                   Foreground="Gray" 
+                                   HorizontalAlignment="Center"/>
+                <TextBlock Text="Приключение" 
+                                   Foreground="Gray" 
+                                   HorizontalAlignment="Center"/>
+                <TextBlock Text="Другие" 
+                                   Foreground="Gray" 
+                                   HorizontalAlignment="Center"/>
+                <TextBlock Text="Все" 
+                                   Foreground="Gray" 
+                                   HorizontalAlignment="Center"/>
+            </ComboBox>
+        </StackPanel>
+        <StackPanel Background="#1a1a1a" 
+                    Height="40" 
+                    Orientation="Horizontal"
+                    Grid.Row="0" 
+                    Grid.Column="3" 
+                    Grid.ColumnSpan="2" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center" >
+            <Image x:Name="SearchPicture" 
+                   Source="{DynamicResource searchPic}"></Image>
+            <TextBox BorderThickness="0"
+                     x:Name="search"
+                     BorderBrush="Transparent" 
+                     TextAlignment="Left" 
+                     VerticalContentAlignment="Center" 
+                     FontSize="15" 
+                     Width="200"
+                     Foreground="AliceBlue" 
+                     Background="#1a1a1a"
+                     TextChanged="searchGame"
+                     materialDesign:HintAssist.Hint="Поиск..."/>
+        </StackPanel>
+        <ListView x:Name="ListGames" 
+                  Grid.Row="1" 
+                  Grid.Column="0" 
+                  Grid.ColumnSpan="5" 
+                  Background="#0a0a0a" 
+                  ItemsSource="{Binding Path=Games, ElementName=Library}" 
+                  ItemTemplate="{StaticResource MyImagesItemTemplate}" 
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                  />
+    </Grid>
+</Page>
